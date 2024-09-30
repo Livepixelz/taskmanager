@@ -53,6 +53,17 @@ export const Completed: Story = {
     },
 };
 
+export const DueDate: Story = {
+    args: {
+        task: {
+            title: 'Task with a due date',
+            description: 'This is a task',
+            dueDate: '2024-10-03',
+            status: 'pending',
+        }
+    },
+};
+
 export const NoDescription: Story = {
     args: {
         task: {

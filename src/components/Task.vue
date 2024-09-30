@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { defineProps, computed, ref } from 'vue';
+import { CheckCircleIcon, PlayCircleIcon, PauseCircleIcon } from "@heroicons/vue/24/outline";
+import { BellAlertIcon } from '@heroicons/vue/16/solid';
+
 interface Task {
   title: string;
   description?: string;
@@ -21,22 +24,9 @@ const statusClass = computed(() => {
     case 'in-progress':
       return 'in-progress'
     case 'completed':
-      return 'completed'
+      return 'text-gray-300 bg-gray-100 shadow-none border-none'
     default:
       return 'pending'
-  }
-})
-
-const buttonText = computed(() => {
-  switch (taskStatus.value) {
-    case 'pending':
-      return 'Mark as in-progress'
-    case 'in-progress':
-      return 'Mark as completed'
-    case 'completed':
-      return 'Mark as pending'
-    default:
-      return 'Mark as pending'
   }
 })
 
@@ -52,13 +42,22 @@ const toggleTaskStatus = () => {
 </script>
 
 <template>
-  <div v-if="task" class="task-card">
-    <h3 v-if="task.title">{{ task.title }}</h3>
-    <p v-if="task.description">{{ task.description }}</p>
-    <div class="status">
-      Status: <span :class="statusClass">{{ task.status }}</span>
-    </div>
-    <button @click="toggleTaskStatus">{{ buttonText }}</button>
+  <div class="rounded-lg border border-gray-200 p-4 shadow-md" :class="statusClass">
+    <div class="flex justify-between">
+      <div>
+          <h3 v-if="task.title" class="text-md font-medium text-gray-900">{{ task.title }}</h3>
+          <p v-if="task.description" class="text-sm text-gray-500">{{ task.description }}</p>
+        <p v-if="task.dueDate" class="text-sm text-gray-500">
+          <BellAlertIcon class="h-3 w-3 inline-block" /> {{ task.dueDate }}</p>
+        </div>
+      <div class="items-start">
+        <button @click="toggleTaskStatus" :title="taskStatus">
+          <PauseCircleIcon v-if="taskStatus === 'pending'" class="h-8 w-8" />
+          <CheckCircleIcon v-if="taskStatus === 'completed'" class="h-8 w-8 text-green-500" />
+          <PlayCircleIcon v-if="taskStatus === 'in-progress'" class="h-8 w-8 text-blue-500" />
+        </button>
+      </div>
+      </div>
   </div>
 </template>
 
