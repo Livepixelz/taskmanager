@@ -1,21 +1,17 @@
 <script setup lang="ts">
-import { defineProps, computed, ref } from 'vue';
+import { defineProps, computed } from 'vue';
 import { CheckCircleIcon, PlayCircleIcon, PauseCircleIcon } from "@heroicons/vue/24/outline";
 import { BellAlertIcon } from '@heroicons/vue/16/solid';
 
-interface Task {
-  title: string;
-  description?: string;
-  dueDate?: string;
-  status: 'pending' | 'in-progress' | 'completed';
-}
+import { type Task, useTaskStore } from "../store/useTaskStore.ts"
 
+const { toggleTaskStatus } = useTaskStore()
 interface Props {
   task: Task;
 }
 const props = defineProps<Props>()
 
-const taskStatus = ref(props.task.status)
+const taskStatus = computed(() =>props.task.status)
 
 const statusClass = computed(() => {
   switch (taskStatus.value) {
@@ -29,16 +25,6 @@ const statusClass = computed(() => {
       return 'pending'
   }
 })
-
-const toggleTaskStatus = () => {
-  if (taskStatus.value === 'pending') {
-    taskStatus.value = 'in-progress'
-  } else if (taskStatus.value === 'in-progress') {
-    taskStatus.value = 'completed'
-  } else if (taskStatus.value === 'completed') {
-    taskStatus.value = 'pending'
-  }
-}
 </script>
 
 <template>
@@ -51,7 +37,7 @@ const toggleTaskStatus = () => {
           <BellAlertIcon class="h-3 w-3 inline-block" /> {{ task.dueDate }}</p>
         </div>
       <div class="items-start">
-        <button @click="toggleTaskStatus" :title="taskStatus">
+        <button @click="() => toggleTaskStatus(task.id)" :title="taskStatus">
           <PauseCircleIcon v-if="taskStatus === 'pending'" class="h-8 w-8" />
           <CheckCircleIcon v-if="taskStatus === 'completed'" class="h-8 w-8 text-green-500" />
           <PlayCircleIcon v-if="taskStatus === 'in-progress'" class="h-8 w-8 text-blue-500" />

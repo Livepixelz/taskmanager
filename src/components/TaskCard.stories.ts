@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
 
-import Task from './Task.vue';
+import TaskCard from './TaskCard.vue';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta = {
     title: 'Example/Task',
-    component: Task,
+    component: TaskCard,
     // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/writing-docs/autodocs
     tags: ['autodocs'],
     argTypes: {
@@ -14,7 +14,7 @@ const meta = {
             description: 'The task object to display on the card.',
         },
     }
-} satisfies Meta<typeof Task>;
+} satisfies Meta<typeof TaskCard>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
